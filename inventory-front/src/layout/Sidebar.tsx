@@ -8,10 +8,10 @@ export default function Sidebar() {
 
             <nav>
                 <NavLink to="/">Dashboard</NavLink>
-                <NavLink to="/products">Produtos</NavLink>
-                <NavLink to="/raw-materials">Matérias-primas</NavLink>
-                <NavLink to="/links">Vínculos</NavLink>
-                <NavLink to="/production">Produção</NavLink>
+                <NavLink to="/products">Products</NavLink>
+                <NavLink to="/raw-materials">Raw-Materials</NavLink>
+                <NavLink to="/links">Link</NavLink>
+                <NavLink to="/production">Production</NavLink>
             </nav>
         </aside>
     );

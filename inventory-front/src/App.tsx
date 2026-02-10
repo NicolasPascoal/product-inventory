@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
-import { Products } from "./pages/Products";
+import Products from "./pages/Products";
 import { RawMaterials } from "./pages/RawMaterials";
 import { Links } from "./pages/Links";
 import { Production } from "./pages/Production";
