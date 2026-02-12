@@ -11,6 +11,7 @@ body {
   padding: 24px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
 }
 
 h1 {
@@ -46,3 +47,15 @@ td {
   padding: 10px;
   border-top: 1px solid #e5e7eb;
 }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+

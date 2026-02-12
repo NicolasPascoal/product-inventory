@@ -2,18 +2,35 @@ import { useEffect, useState } from "react";
 import { api } from "../services/api";
 
 export default function Dashboard() {
+    interface ProductionItem {
+        product: string;
+        quantity: number;
+        totalValue: number;
+    }
 
-    const [data, setData] = useState<any>(null);
+    interface ProductionResponse {
+        totalValue: number;
+        productionPlan: ProductionItem[];
+    }
+
+
+    const [data, setData] = useState<ProductionResponse | null>(null);
     const [loading, setLoading] = useState(false);
 
-    function loadProduction() {
-        setLoading(true);
+    async function loadProduction() {
+        try {
+            setLoading(true);
 
-        api.get("/production/suggested")
-            .then(res => setData(res.data))
-            .catch(err => console.error(err))
-            .finally(() => setLoading(false));
+            const res = await api.get<ProductionResponse>("/production/suggested");
+            setData(res.data);
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     }
+
 
     useEffect(() => {
         loadProduction();
@@ -23,11 +40,12 @@ export default function Dashboard() {
 
     return (
         <div className="container">
-            <h1>Productions</h1>
-
-            <button onClick={loadProduction}>
-                Update
-            </button>
+            <div className="header">
+                <h1>Productions</h1>
+                <button onClick={loadProduction}>
+                    Update
+                </button>
+            </div>
 
             <h2>Total: {data?.totalValue}</h2>
 
@@ -40,7 +58,7 @@ export default function Dashboard() {
                 </tr>
                 </thead>
                 <tbody>
-                {data?.productionPlan?.map((item: any, index: number) => (
+                {data?.productionPlan?.map((item: ProductionItem, index: number) => (
                     <tr key={index}>
                         <td>{item.product}</td>
                         <td>{item.quantity}</td>
