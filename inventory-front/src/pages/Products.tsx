@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-import "../products.css";
+import "../pages.css";
 import type { Product } from "../types/product";
 import EditProductModal from "../components/ProductModal.tsx";
 
@@ -68,68 +68,70 @@ export default function Products() {
     setIsModalOpen(true);
   }
 
-  return (
-      <div className="container">
-        <h1>Products</h1>
+ return (
+  <div className="container">
+    <div className="header">
+      <h1>Productions</h1>
+      <button
+        onClick={() => {
+          setSelectedProduct({ id: 0, name: "", price: 0 });
+          setIsCreating(true);
+          setIsModalOpen(true);
+        }}
+      >
+        Add Product
+      </button>
+    </div>
 
-        <button
-            onClick={() => {
-              setSelectedProduct({ id: 0, name: "", price: 0 });
-              setIsCreating(true);
-              setIsModalOpen(true);
-            }}
-        >
-          Add Product
-        </button>
+    {/* Tabela de produtos */}
+    {loading ? (
+      <p>Loading products...</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((p) => (
+            <tr key={p.id}>
+              <td>{p.id}</td>
+              <td>{p.name}</td>
+              <td>R$ {p.price.toFixed(2)}</td>
+              <td>
+                <button
+                  style={{ background: "#2563eb", marginRight: "8px" }}
+                  onClick={() => handleOpenEdit(p)}
+                >
+                  Edit
+                </button>
+                <button
+                  style={{ background: "#ef4444" }}
+                  onClick={() => handleDelete(p.id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
 
-        {loading ? (
-            <p>Loading products...</p>
-        ) : (
-            <table>
-              <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Actions</th>
-              </tr>
-              </thead>
-              <tbody>
-              {products.map((p) => (
-                  <tr key={p.id}>
-                    <td>{p.id}</td>
-                    <td>{p.name}</td>
-                    <td>R$ {p.price.toFixed(2)}</td>
-                    <td>
-                      <button
-                          style={{ background: "#2563eb", marginRight: "8px" }}
-                          onClick={() => handleOpenEdit(p)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                          style={{ background: "#ef4444" }}
-                          onClick={() => handleDelete(p.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-              ))}
-              </tbody>
-            </table>
-        )}
-        {isModalOpen && selectedProduct && (
-            <EditProductModal
-                product={selectedProduct}
-                onClose={() => setIsModalOpen(false)}
-                onSave={handleSave}
-                isCreating={isCreating}
-            />
-        )}
+    {/* Modal */}
+    {isModalOpen && selectedProduct && (
+      <EditProductModal
+        product={selectedProduct}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
+        isCreating={isCreating}
+      />
+    )}
+  </div>
+);
 
-      </div>
-  );
 }
-
-

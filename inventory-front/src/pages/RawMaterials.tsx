@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import type { RawMaterials } from "../types/rawMaterials";
-import "../rawMaterials.css"
+import "../pages.css";
 import EditRawMaterialsModal from "../components/RawMaterialsModal.tsx";
 
 export function RawMaterials() {
@@ -65,17 +65,18 @@ export function RawMaterials() {
 
     return (
         <div className="container">
-            <h1>Raw-Material</h1>
-
-            <button
-                onClick={() => {
-                    setSelectedRawMaterials({ id: 0, name: "", stock_quantity: 0 });
-                    setIsCreating(true);
-                    setIsModalOpen(true);
-                }}
-                >
-                Add Raw-Material
-            </button>
+    <div className="header">
+        <h1>Raw-Material</h1>
+      <button
+        onClick={() => {
+          setSelectedRawMaterials({ id: 0, name: "", stock_quantity: 0 });
+          setIsCreating(true);
+          setIsModalOpen(true);
+        }}
+      >
+        Add Product
+      </button>
+    </div>
 
             {loading ? (
                 <p>Loading Raw-Materials...</p>

@@ -11,7 +11,6 @@ export default function Sidebar() {
                 <NavLink to="/products">Products</NavLink>
                 <NavLink to="/raw-materials">Raw-Materials</NavLink>
                 <NavLink to="/links">Link</NavLink>
-                <NavLink to="/production">Production</NavLink>
             </nav>
         </aside>
     );
