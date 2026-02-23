@@ -1,10 +1,12 @@
 export interface Link {
     id:number;
-    product: {
-        id: number;
+    product:{
+        id:number;
+        name:string;
     };
-    rawMaterial: {
-        id: number;
+    rawMaterial:{
+        id:number;
+        name:string;
     };
-    quantityRequired: number;
+    quantityRequired:number;
 }

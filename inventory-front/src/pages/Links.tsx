@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import type { Link } from "../types/link";
+import "../pages.css"
 import type { Product } from "../types/product";
 import type { RawMaterials } from "../types/rawMaterials";
+import EditLinkModal from "../components/linkModal.tsx";
 
 export function Links() {
     const [links, setLinks] = useState<Link[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
     const [rawMaterials, setRawMaterials] = useState<RawMaterials[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedLink, setSelectedLink] = useState<Link | null>(null);
+    const [isCreating, setIsCreating] = useState(false);
 
     useEffect(() => {
         loadData();
     }, []);
 
+    
     async function loadData() {
         try {
             const [linksRes, productsRes, rawRes] = await Promise.all([
@@ -27,6 +33,7 @@ export function Links() {
             console.log("RAW:", rawRes.data);
 
             setLinks(linksRes.data);
+
             setProducts(productsRes.data);
             setRawMaterials(rawRes.data);
         } catch (error) {
@@ -36,16 +43,8 @@ export function Links() {
         }
     }
 
-    const productMap = Object.fromEntries(
-        products.map(p => [p.id, p.name])
-    );
-
-    const rawMaterialMap = Object.fromEntries(
-        rawMaterials.map(r => [r.id, r.name])
-    );
-
-    /*async function handleDelete(id: number) {
-        if (!window.confirm("Delete this link?")) return;
+    async function handleDelete(id: number) {
+        if (!window.confirm("Are you sure you want to delete?")) return;
 
         try {
             await api.delete(`/product-raw-material/${id}`);
@@ -53,12 +52,55 @@ export function Links() {
         } catch (error) {
             console.error(error);
         }
-    }*/
+    }
+
+   async function handleSave(link: Link) {
+    try {
+        const payload = {
+            product: { id: link.product.id },
+            rawMaterial: { id: link.rawMaterial.id },
+            quantityRequired: link.quantityRequired,
+        };
+
+        console.log("PAYLOAD:", payload);
+
+        if (isCreating) {
+            await api.post("/product-raw-material", payload);
+        } else {
+            await api.put(`/product-raw-material/${link.id}`, payload);
+        }
+
+        setIsModalOpen(false);
+        setSelectedLink(null);
+        setIsCreating(false);
+        loadData();
+    } catch (error) {
+        console.error("SAVE ERROR:", error);
+    }
+}
+ function handleOpenEdit(link: Link) {
+    setSelectedLink(link);
+    setIsModalOpen(true);
+  }
 
     return (
         <div className="container">
             <h1>Product Composition</h1>
+            <button
+    onClick={() => {
+        setSelectedLink({
+            id: 0,
+            product: { id: 0, name: "" },
+            rawMaterial: { id: 0, name: "" },
+            quantityRequired: 1,
+            });
 
+        setIsCreating(true);
+        setIsModalOpen(true);
+    }}
+>
+    Add Link
+</button>
             {loading ? (
                 <p>Loading...</p>
             ) : (
@@ -76,22 +118,38 @@ export function Links() {
                     {links.map((link, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{productMap[link.product.id] || "Unknown"}</td>
-                            <td>{rawMaterialMap[link.rawMaterial.id] || "Unknown"}</td>
+                            <td>{link.product?.name}</td>
+                            <td>{link.rawMaterial?.name}</td>
                             <td>{link.quantityRequired}</td>
                             <td>
                                 <button
-                                    style={{ background: "#ef4444" }}
-                                    onClick={() => console.log("Cannot delete without id")}
-                                >
-                                    Delete
-                                </button>
+                          style={{ background: "#2563eb", marginRight: "8px" }}
+                          onClick={() => handleOpenEdit(link)}
+                      >
+                        Edit
+                      </button>
+                        <button
+                          style={{ background: "#ef4444" }}
+                          onClick={() => handleDelete(link.id)}
+                      >
+                        Delete
+                      </button>    
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
             )}
+            {isModalOpen && selectedLink && (
+        <EditLinkModal
+            link={selectedLink}
+            products={products}
+            rawMaterials={rawMaterials}
+            onClose={() => setIsModalOpen(false)}
+            onSave={handleSave}
+            isCreating={isCreating}
+    />
+)}
         </div>
     );
 }

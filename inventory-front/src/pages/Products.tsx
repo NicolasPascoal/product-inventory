@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-import "../products.css";
+import "../pages.css"
 import type { Product } from "../types/product";
 import EditProductModal from "../components/ProductModal.tsx";
 

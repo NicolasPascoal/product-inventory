@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import type { RawMaterials } from "../types/rawMaterials";
-import "../rawMaterials.css"
+import "../pages.css"
 import EditRawMaterialsModal from "../components/RawMaterialsModal.tsx";
 
 export function RawMaterials() {
