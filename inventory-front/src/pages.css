@@ -59,6 +59,7 @@ td button {
 td button:hover {
     opacity: 0.85;
 }
+
 /* OVERLAY */
 .modal-overlay {
     position: fixed;
@@ -80,24 +81,20 @@ td button:hover {
     box-shadow:
         0 20px 25px rgba(0,0,0,0.15),
         0 8px 10px rgba(0,0,0,0.08);
-
     animation: modalEnter .18s ease;
 }
 
-/* TITLE */
 .modal h2 {
     margin: 0 0 18px 0;
     font-size: 20px;
 }
 
-/* FORM LAYOUT */
 .modal form {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* INPUT + SELECT */
 .modal input,
 .modal select {
     width: 100%;
@@ -109,7 +106,6 @@ td button:hover {
     transition: all .15s ease;
 }
 
-/* FOCUS */
 .modal input:focus,
 .modal select:focus {
     outline: none;
@@ -118,7 +114,6 @@ td button:hover {
     box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
 }
 
-/* ACTIONS */
 .modal-actions {
     display: flex;
     justify-content: flex-end;
@@ -126,7 +121,6 @@ td button:hover {
     margin-top: 8px;
 }
 
-/* CANCEL BUTTON */
 .modal-actions button[type="button"] {
     background: #e5e7eb;
     color: #111827;
@@ -136,7 +130,6 @@ td button:hover {
     background: #d1d5db;
 }
 
-/* SAVE BUTTON */
 .modal-actions button[type="submit"] {
     background: #2563eb;
 }
@@ -145,7 +138,6 @@ td button:hover {
     background: #1d4ed8;
 }
 
-/* ANIMATION */
 @keyframes modalEnter {
     from {
         opacity: 0;
